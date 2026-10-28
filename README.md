@@ -26,6 +26,8 @@ npm run dist       # instalator + wersja portable w folderze release/
 
 Nowy model to jeden plik w `src/models/` (parametry, sekcje panelu i funkcja `build`) dopisany do listy w `src/generate.js`.
 
-## Licencja
+## Prawa autorskie i licencja
 
-MIT
+Copyright © 2026 aki76pl. Kod jest udostępniony na licencji [MIT](LICENSE): możesz go używać, zmieniać i rozpowszechniać, także komercyjnie, pod warunkiem zachowania informacji o prawach autorskich i treści licencji.
+
+Wygenerowane pliki STL / 3MF możesz wykorzystywać bez ograniczeń. Inspiracje, źródła wymiarów i licencje użytych bibliotek opisuje plik [NOTICE.md](NOTICE.md).
