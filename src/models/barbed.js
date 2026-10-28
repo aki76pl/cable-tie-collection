@@ -7,6 +7,16 @@ export default {
   name: 'Z zadziorami',
   description: 'Płaska opaska z oczkiem i elastycznymi zadziorami. Zapina się przez przełożenie końca przez oczko.',
   printHint: 'Wymaga TPU (zadziory muszą się uginać). Drukuj płasko, bez podpór.',
+  label: true,
+  materials: {
+    pla: 'Zadziory z PLA się połamią: ten model wymaga TPU.',
+    petg: 'Zadziory z PETG mogą pękać: najlepiej drukować z TPU.',
+  },
+  test: { overrides: { length: 80, barbCount: 3 } },
+  // Oczko + obwód wiązki + strefa zadziorów + szpic.
+  fit: (p, d) => ({
+    length: Math.round(Math.PI * (d + p.thickness) + p.barbCount * p.barbPitch + p.barbLength + 1.2 * p.width + 2 * p.eyeWall + 12),
+  }),
   defaults: {
     length: 160, width: 6, thickness: 1.8, eyeThickness: 2.6, eyeWall: 2,
     slotClearance: 0.4, barbCount: 12, barbPitch: 6, barbLength: 4,
@@ -17,10 +27,10 @@ export default {
     { title: 'Pasek', fields: [
       { key: 'length', label: 'Długość całkowita', unit: 'mm', min: 60, max: 400, step: 1 },
       { key: 'width', label: 'Szerokość', unit: 'mm', min: 3, max: 20, step: 0.5 },
-      { key: 'thickness', label: 'Grubość', unit: 'mm', min: 0.8, max: 4, step: 0.1 },
+      { key: 'thickness', label: 'Grubość', unit: 'mm', min: 0.8, max: 4, step: 0.1, role: 'thin' },
     ]},
     { title: 'Oczko', fields: [
-      { key: 'slotClearance', label: 'Luz otworu', unit: 'mm', hint: 'na stronę', min: 0.1, max: 1.5, step: 0.05 },
+      { key: 'slotClearance', label: 'Luz otworu', unit: 'mm', hint: 'na stronę', min: 0.1, max: 1.5, step: 0.05, role: 'clearance' },
       { key: 'eyeWall', label: 'Ścianka oczka', unit: 'mm', min: 1, max: 6, step: 0.1 },
       { key: 'eyeThickness', label: 'Grubość oczka', unit: 'mm', min: 1, max: 8, step: 0.1 },
     ]},
@@ -29,7 +39,7 @@ export default {
       { key: 'barbPitch', label: 'Rozstaw', unit: 'mm', min: 2, max: 20, step: 0.1 },
       { key: 'barbLength', label: 'Długość zadzioru', unit: 'mm', min: 1, max: 15, step: 0.1 },
       { key: 'barbOverhang', label: 'Wysięg poza otwór', unit: 'mm', hint: 'na stronę', min: 0.3, max: 5, step: 0.1 },
-      { key: 'barbFinger', label: 'Grubość zadzioru', unit: 'mm', min: 0.5, max: 3, step: 0.05 },
+      { key: 'barbFinger', label: 'Grubość zadzioru', unit: 'mm', min: 0.5, max: 3, step: 0.05, role: 'thin' },
     ]},
   ],
 
@@ -60,7 +70,9 @@ export default {
     // Zadziory: skośne „palce” odchodzące od krawędzi w stronę oczka, z klinową szczeliną przy pasku.
     const tipLen = Math.min(W * 1.2, (x1 - eyeCx) / 3);
     const lastX = x1 - tipLen - 1;
-    const maxCount = Math.max(0, Math.floor((lastX - p.barbLength - (eyeCx + eyeX / 2 + 15)) / p.barbPitch) + 1);
+    const labelX0 = eyeCx + eyeX / 2 + 2;
+    const free = Math.max(15, p.labelLen ? p.labelLen + 6 : 0);
+    const maxCount = Math.max(0, Math.floor((lastX - p.barbLength - (eyeCx + eyeX / 2 + free)) / p.barbPitch) + 1);
     let count = p.barbCount;
     if (count > maxCount) { warnings.push(`Przy tej długości mieści się maks. ${maxCount} par zadziorów.`); count = maxCount; }
     const fx = Math.min(p.barbFinger * 1.6, p.barbLength * 0.8);
@@ -81,6 +93,7 @@ export default {
     return {
       solid: track(Manifold.union([eye, strap])),
       warnings,
+      label: p.labelLen ? { x: labelX0 + p.labelLen / 2, z: T, width: W } : null,
       info: [['Zadziory', `${count} par`], ['Otwór oczka', `${slotX.toFixed(1)} × ${slotY.toFixed(1)} mm`]],
     };
   },

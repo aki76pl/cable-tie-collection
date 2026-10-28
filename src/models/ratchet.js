@@ -7,6 +7,11 @@ export default {
   name: 'Zapadkowa',
   description: 'Klasyczna opaska z ząbkami i zapadką w główce. Zaciska się płynnie co jeden ząbek.',
   printHint: 'Najlepiej PETG lub TPU 95A. Drukuj płasko, ząbkami do góry, bez podpór.',
+  label: true,
+  materials: { pla: 'Zapadka z PLA jest krucha: opaska wytrzyma najwyżej kilka zapięć.' },
+  test: { overrides: { length: 90, smoothStart: 0 } },
+  // Obwód wiązki + przejście przez główkę + ok. 30 mm końcówki do chwycenia.
+  fit: (p, d) => ({ length: Math.round(Math.PI * (d + p.thickness) + p.thickness + 2 * p.headWall + 35) }),
   defaults: {
     length: 180, width: 8, thickness: 1.6, endShape: 'pointed',
     toothPitch: 2, toothHeight: 0.8, smoothStart: 20,
@@ -17,7 +22,7 @@ export default {
     { title: 'Pasek', fields: [
       { key: 'length', label: 'Długość paska', unit: 'mm', min: 60, max: 400, step: 1 },
       { key: 'width', label: 'Szerokość', unit: 'mm', min: 4, max: 20, step: 0.5 },
-      { key: 'thickness', label: 'Grubość', unit: 'mm', min: 0.8, max: 4, step: 0.1 },
+      { key: 'thickness', label: 'Grubość', unit: 'mm', min: 0.8, max: 4, step: 0.1, role: 'thin' },
       { key: 'endShape', label: 'Koniec', type: 'choice', options: [['pointed', 'Szpic'], ['round', 'Okrągły']] },
     ]},
     { title: 'Ząbki', fields: [
@@ -28,8 +33,8 @@ export default {
     { title: 'Główka z zapadką', fields: [
       { key: 'headHeight', label: 'Wysokość główki', unit: 'mm', min: 3, max: 15, step: 0.1 },
       { key: 'headWall', label: 'Ścianka główki', unit: 'mm', min: 0.8, max: 4, step: 0.1 },
-      { key: 'clearance', label: 'Luz w kanale', unit: 'mm', hint: 'na stronę', min: 0, max: 1, step: 0.05 },
-      { key: 'pawlThickness', label: 'Grubość zapadki', unit: 'mm', min: 0.6, max: 3, step: 0.1 },
+      { key: 'clearance', label: 'Luz w kanale', unit: 'mm', hint: 'na stronę', min: 0, max: 1, step: 0.05, role: 'clearance' },
+      { key: 'pawlThickness', label: 'Grubość zapadki', unit: 'mm', min: 0.6, max: 3, step: 0.1, role: 'thin' },
     ]},
   ],
 
@@ -63,7 +68,9 @@ export default {
 
     // Pasek: profil boczny z ząbkami piłowymi (pionowa ścianka od strony główki), przycięty do obrysu.
     const sx0 = hx1 - 0.02, sx1 = -hx0;
-    const teethStart = sx0 + p.smoothStart;
+    // Napis leży na gładkim odcinku przy główce; w razie potrzeby odcinek się wydłuża.
+    const labelX0 = sx0 + 2;
+    const teethStart = Math.max(sx0 + p.smoothStart, p.labelLen ? labelX0 + p.labelLen + 2 : -Infinity);
     const teethEnd = sx1 - Math.max(6, W);         // wolny koniec bez ząbków — łatwiej wprowadzić
     const prof = [[sx0, 0], [sx1, 0], [sx1, T], [teethEnd, T]];
     let x = teethEnd;
@@ -80,7 +87,9 @@ export default {
     if (n === 0) warnings.push('Brak miejsca na ząbki — zmniejsz gładki odcinek lub wydłuż pasek.');
 
     const solid = track(Manifold.union([track(head.subtract(channel)), pawl, strap]));
-    return { solid, warnings, info: [['Ząbki', `${n} szt.`], ['Kanał', `${gapX.toFixed(1)} × ${gapY.toFixed(1)} mm`]] };
+    const label = p.labelLen ? { x: labelX0 + p.labelLen / 2, z: T, width: W } : null;
+    if (label && labelX0 + p.labelLen > teethEnd) warnings.push('Napis jest za długi na ten pasek.');
+    return { solid, warnings, label, info: [['Ząbki', `${n} szt.`], ['Kanał', `${gapX.toFixed(1)} × ${gapY.toFixed(1)} mm`]] };
   },
 };
 

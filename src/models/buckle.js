@@ -8,6 +8,11 @@ export default {
   name: 'Z klamrą',
   description: 'Bezstopniowo regulowana opaska z klamrą przelotową. Bez dziurek i bez zapadek.',
   printHint: 'TPU 95A lub PETG. Drukuj płasko, żeberkami do góry, bez podpór.',
+  label: true,
+  materials: { pla: 'Pasek z PLA jest za sztywny do klamry: użyj TPU 95A lub PETG.' },
+  test: { overrides: { length: 90 } },
+  // Obwód wiązki + dwa przejścia przez klamrę + ok. 40 mm końcówki.
+  fit: (p, d) => ({ length: Math.round(Math.PI * (d + p.thickness) + 4 * p.thickness + 2 * p.barWidth + 4 * p.frameWall + 40) }),
   defaults: {
     length: 170, width: 12, thickness: 1.4, endShape: 'round',
     frameThickness: 2.6, frameWall: 2, barWidth: 2.4, slotClearance: 0.35,
@@ -18,14 +23,14 @@ export default {
     { title: 'Pasek', fields: [
       { key: 'length', label: 'Długość całkowita', unit: 'mm', min: 60, max: 400, step: 1 },
       { key: 'width', label: 'Szerokość', unit: 'mm', min: 5, max: 30, step: 0.5 },
-      { key: 'thickness', label: 'Grubość', unit: 'mm', min: 0.8, max: 3, step: 0.1 },
+      { key: 'thickness', label: 'Grubość', unit: 'mm', min: 0.8, max: 3, step: 0.1, role: 'thin' },
       { key: 'endShape', label: 'Koniec', type: 'choice', options: [['round', 'Okrągły'], ['pointed', 'Szpic'], ['square', 'Prosty']] },
     ]},
     { title: 'Klamra', fields: [
       { key: 'frameThickness', label: 'Grubość ramy', unit: 'mm', min: 1.2, max: 6, step: 0.1 },
       { key: 'frameWall', label: 'Ścianka ramy', unit: 'mm', min: 1, max: 5, step: 0.1 },
       { key: 'barWidth', label: 'Szerokość poprzeczki', unit: 'mm', min: 1, max: 6, step: 0.1 },
-      { key: 'slotClearance', label: 'Luz szczelin', unit: 'mm', hint: 'na stronę', min: 0, max: 1, step: 0.05 },
+      { key: 'slotClearance', label: 'Luz szczelin', unit: 'mm', hint: 'na stronę', min: 0, max: 1, step: 0.05, role: 'clearance' },
     ]},
     { title: 'Żeberka', fields: [
       { key: 'ribs', label: 'Żeberka na pasku', type: 'choice', options: [['on', 'Tak'], ['off', 'Nie']] },
@@ -65,7 +70,7 @@ export default {
       // Trapezowe żeberka w poprzek paska, od ramy do ok. 10 mm przed końcem.
       const ribs = [];
       const w = Math.min(1, p.ribPitch * 0.5);
-      for (let x = fx1 + 6; x < x1 - Math.max(10, W); x += p.ribPitch) {
+      for (let x = Math.max(fx1 + 6, p.labelLen ? fx1 + 4 + p.labelLen + 2 : 0); x < x1 - Math.max(10, W); x += p.ribPitch) {
         ribs.push(poly(CS, [[x, T - 0.01], [x + w, T - 0.01], [x + w * 0.75, T + ribH], [x + w * 0.25, T + ribH]], track));
         ribCount++;
       }
@@ -78,6 +83,7 @@ export default {
     return {
       solid: track(Manifold.union([frame, strap])),
       warnings: [],
+      label: p.labelLen ? { x: fx1 + 3 + p.labelLen / 2, z: T, width: W } : null,
       info: [['Szczeliny', `2 × ${slotX.toFixed(1)} × ${slotY.toFixed(1)} mm`], ['Żeberka', ribCount ? `${ribCount} szt.` : 'brak']],
     };
   },

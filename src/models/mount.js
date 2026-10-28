@@ -7,6 +7,13 @@ export default {
   name: 'Montażowa',
   description: 'Opaska z płytką do przykręcenia pod blatem lub na ścianie. Kable trzymają się przy płytce.',
   printHint: 'TPU 95A (pasek musi się wyginać). Drukuj płasko, kołkiem do góry.',
+  label: true,
+  materials: { pla: 'Pasek z PLA pęknie przy zginaniu: użyj TPU 95A.' },
+  test: { overrides: { length: 50, slotCount: 2, baseLength: 26, holeCount: 0 } },
+  // Obwód wiązki + połowa strefy oczek + odstęp od końca.
+  fit: (p, d) => ({
+    length: Math.round(Math.PI * (d + p.thickness) + (p.slotCount - 1) * p.slotPitch / 2 + p.endMargin + p.slotLength / 2 + 4),
+  }),
   defaults: {
     baseLength: 40, baseWidth: 22, baseThickness: 3, holeCount: 1, screwDiameter: 3.5, screwHead: 7,
     length: 120, width: 12, thickness: 1.8,
@@ -26,7 +33,7 @@ export default {
     { title: 'Pasek', fields: [
       { key: 'length', label: 'Długość paska', unit: 'mm', min: 40, max: 300, step: 1 },
       { key: 'width', label: 'Szerokość', unit: 'mm', min: 6, max: 30, step: 0.5 },
-      { key: 'thickness', label: 'Grubość', unit: 'mm', min: 0.8, max: 4, step: 0.1 },
+      { key: 'thickness', label: 'Grubość', unit: 'mm', min: 0.8, max: 4, step: 0.1, role: 'thin' },
     ]},
     { title: 'Oczka', fields: [
       { key: 'slotCount', label: 'Ilość oczek', unit: 'szt.', min: 0, max: 40, step: 1 },
@@ -36,7 +43,7 @@ export default {
       { key: 'endMargin', label: 'Odstęp od końca', unit: 'mm', min: 1, max: 30, step: 0.5 },
     ]},
     { title: 'Kołek', fields: [
-      { key: 'pegClearance', label: 'Luz szyjki', unit: 'mm', min: 0, max: 1, step: 0.05 },
+      { key: 'pegClearance', label: 'Luz szyjki', unit: 'mm', min: 0, max: 1, step: 0.05, role: 'clearance' },
       { key: 'capHeight', label: 'Wysokość czapki', unit: 'mm', min: 0.6, max: 5, step: 0.1 },
       { key: 'capOverhang', label: 'Nawis czapki', unit: 'mm', min: 0.2, max: 3, step: 0.1 },
     ]},
@@ -85,7 +92,8 @@ export default {
     // Pasek z oczkami przy wolnym końcu.
     let plan = strapPlan(CS, sx0, bx0 + 2, W, 'round', 'square', track);
     const xLast = sx0 + p.endMargin + p.slotLength / 2;
-    const maxSlots = Math.max(0, Math.floor((bx0 - 15 - xLast) / pitch) + 1);
+    const free = Math.max(15, p.labelLen ? p.labelLen + 8 : 0);
+    const maxSlots = Math.max(0, Math.floor((bx0 - free - xLast) / pitch) + 1);
     let count = p.slotCount;
     if (count > maxSlots) { warnings.push(`Przy tej długości paska mieści się maks. ${maxSlots} oczek.`); count = maxSlots; }
     // Oczka liczone od wolnego końca (-X) w stronę płytki.
@@ -97,6 +105,7 @@ export default {
     return {
       solid: track(Manifold.union([base, strap, pegSolid])),
       warnings,
+      label: p.labelLen ? { x: bx0 - 3 - p.labelLen / 2, z: T, width: W } : null,
       info: [['Oczka', `${count} szt.`], ['Otwory', `${holesX.length} × Ø${p.screwDiameter}`]],
     };
   },

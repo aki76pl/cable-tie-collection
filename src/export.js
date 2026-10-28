@@ -4,7 +4,7 @@ export function toSTL(positions, name = 'opaska') {
   const triCount = positions.length / 9;
   const buf = new ArrayBuffer(84 + triCount * 50);
   const dv = new DataView(buf);
-  const header = `Generator Opasek - ${name}`.slice(0, 80);
+  const header = `Kolekcja Opasek - ${name}`.slice(0, 80);
   for (let i = 0; i < header.length; i++) dv.setUint8(i, header.charCodeAt(i) & 0x7f);
   dv.setUint32(80, triCount, true);
   let o = 84;
@@ -23,26 +23,30 @@ export function toSTL(positions, name = 'opaska') {
   return new Blob([buf], { type: 'model/stl' });
 }
 
-export function to3MF(vertProperties, numProp, triVerts, name = 'opaska') {
-  const nVert = vertProperties.length / numProp;
-  const parts = [];
-  for (let i = 0; i < nVert; i++) {
-    const b = i * numProp;
-    parts.push(`<vertex x="${+vertProperties[b].toFixed(4)}" y="${+vertProperties[b + 1].toFixed(4)}" z="${+vertProperties[b + 2].toFixed(4)}"/>`);
-  }
-  const tris = [];
-  for (let i = 0; i < triVerts.length; i += 3) {
-    tris.push(`<triangle v1="${triVerts[i]}" v2="${triVerts[i + 1]}" v3="${triVerts[i + 2]}"/>`);
-  }
+// objects: [{ vertProperties, numProp, triVerts }] — każdy element jako osobny obiekt w 3MF.
+export function to3MF(objects, name = 'opaska') {
+  const res = objects.map((o, idx) => {
+    const { vertProperties: vp, numProp: np, triVerts: tv } = o;
+    const verts = [];
+    for (let i = 0; i < vp.length / np; i++) {
+      const b = i * np;
+      verts.push(`<vertex x="${+vp[b].toFixed(4)}" y="${+vp[b + 1].toFixed(4)}" z="${+vp[b + 2].toFixed(4)}"/>`);
+    }
+    const tris = [];
+    for (let i = 0; i < tv.length; i += 3) tris.push(`<triangle v1="${tv[i]}" v2="${tv[i + 1]}" v3="${tv[i + 2]}"/>`);
+    const label = objects.length > 1 ? `${name} ${idx + 1}` : name;
+    return `<object id="${idx + 1}" type="model" name="${esc(label)}"><mesh>
+<vertices>${verts.join('')}</vertices>
+<triangles>${tris.join('')}</triangles>
+</mesh></object>`;
+  });
+  const items = objects.map((_, idx) => `<item objectid="${idx + 1}"/>`).join('');
   const model = `<?xml version="1.0" encoding="UTF-8"?>
 <model unit="millimeter" xml:lang="pl-PL" xmlns="http://schemas.microsoft.com/3dmanufacturing/core/2015/02">
-<metadata name="Title">${name}</metadata>
-<metadata name="Application">Generator Opasek</metadata>
-<resources><object id="1" type="model" name="${name}"><mesh>
-<vertices>${parts.join('')}</vertices>
-<triangles>${tris.join('')}</triangles>
-</mesh></object></resources>
-<build><item objectid="1"/></build>
+<metadata name="Title">${esc(name)}</metadata>
+<metadata name="Application">Kolekcja Opasek</metadata>
+<resources>${res.join('')}</resources>
+<build>${items}</build>
 </model>`;
   const contentTypes = `<?xml version="1.0" encoding="UTF-8"?>
 <Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">
@@ -59,6 +63,8 @@ export function to3MF(vertProperties, numProp, triVerts, name = 'opaska') {
     ['3D/3dmodel.model', model],
   ]);
 }
+
+const esc = (t) => String(t).replace(/[<>&"]/g, (c) => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;' })[c]);
 
 const CRC_TABLE = (() => {
   const t = new Uint32Array(256);

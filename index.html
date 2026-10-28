@@ -13,12 +13,74 @@
         <img src="./icon.svg" alt="" width="28" height="28" />
         <div>
           <h1>Kolekcja Opasek</h1>
-          <p>4 modele opasek do kabli — STL / 3MF</p>
+          <p>7 modeli opasek i uchwytów do kabli — STL / 3MF</p>
         </div>
       </header>
-      <nav id="models" aria-label="Rodzaj opaski"></nav>
-      <div id="model-desc"></div>
-      <form id="controls" autocomplete="off"></form>
+      <div id="scroll">
+        <nav id="models" aria-label="Rodzaj opaski"></nav>
+        <div id="model-desc"></div>
+
+        <section class="block" id="profile">
+          <h2>Profil wydruku</h2>
+          <div class="field"><label>Materiał</label><div class="seg choice" id="pr-material"></div></div>
+          <div class="field"><label>Dysza</label><div class="seg choice" id="pr-nozzle"></div></div>
+          <button type="button" class="wide" id="pr-apply">Ustaw luzy i grubości według profilu</button>
+          <p class="status" id="pr-status"></p>
+        </section>
+
+        <form id="controls" autocomplete="off"></form>
+
+        <section class="block" id="fit">
+          <h2>Dopasowanie do wiązki</h2>
+          <div class="row">
+            <label for="fit-d">Średnica wiązki lub kabla</label>
+            <span class="num"><input id="fit-d" type="number" min="2" max="150" step="0.5" value="20"><em>mm</em></span>
+          </div>
+          <button type="button" class="wide" id="fit-apply">Dopasuj model</button>
+          <p class="status" id="fit-status"></p>
+        </section>
+
+        <section class="block" id="presets">
+          <h2>Presety</h2>
+          <div class="row">
+            <input id="preset-name" type="text" maxlength="40" placeholder="Nazwa, np. Biurko 20 mm">
+            <button type="button" id="preset-save">Zapisz</button>
+          </div>
+          <div class="row">
+            <select id="preset-list" aria-label="Zapisane presety"></select>
+            <button type="button" id="preset-load">Wczytaj</button>
+            <button type="button" id="preset-del" title="Usuń preset" aria-label="Usuń preset">✕</button>
+          </div>
+          <div class="row three">
+            <button type="button" id="preset-export">Eksportuj</button>
+            <button type="button" id="preset-import">Importuj</button>
+            <button type="button" id="preset-link">Kopiuj link</button>
+          </div>
+          <input id="preset-file" type="file" accept=".json,application/json" hidden>
+          <input id="link-out" type="text" readonly hidden aria-label="Link do ustawień">
+          <p class="status" id="preset-status"></p>
+        </section>
+
+        <section class="block" id="sheet">
+          <h2>Arkusz wydruku</h2>
+          <button type="button" class="wide" id="sheet-add">Dodaj bieżący model do arkusza</button>
+          <ul id="sheet-list"></ul>
+          <div class="row">
+            <label>Stół drukarki</label>
+            <span class="num"><input id="bed-x" type="number" min="50" max="1000" step="1" aria-label="Szerokość stołu"><em>×</em></span>
+            <span class="num"><input id="bed-y" type="number" min="50" max="1000" step="1" aria-label="Głębokość stołu"><em>mm</em></span>
+          </div>
+          <button type="button" class="wide ghost" id="sheet-clear">Wyczyść arkusz</button>
+        </section>
+
+        <section class="block" id="updates" hidden>
+          <h2>Aktualizacje</h2>
+          <p class="version">Zainstalowana wersja: <b id="app-version"></b></p>
+          <label class="check"><input type="checkbox" id="upd-auto"> Sprawdzaj przy uruchomieniu i powiadamiaj</label>
+          <button type="button" class="wide" id="upd-check">Sprawdź teraz</button>
+          <p class="status" id="upd-status"></p>
+        </section>
+      </div>
       <section id="stats"></section>
       <ul id="warnings"></ul>
       <footer class="actions">
@@ -29,11 +91,25 @@
     </aside>
     <main id="viewport">
       <canvas id="view"></canvas>
+      <div class="mode-tabs" aria-label="Co pokazać">
+        <button type="button" data-mode="model">Model</button>
+        <button type="button" data-mode="test">Test luzów</button>
+        <button type="button" data-mode="sheet">Arkusz</button>
+      </div>
       <div class="view-tools">
         <button type="button" data-view="iso" title="Widok izometryczny">3D</button>
         <button type="button" data-view="top" title="Widok z góry">Góra</button>
         <button type="button" data-view="side" title="Widok z boku">Bok</button>
       </div>
+      <p id="mode-note"></p>
+      <div id="update-banner" role="status" hidden>
+        <span id="update-text"></span>
+        <a id="update-link" target="_blank" rel="noopener">Pobierz</a>
+        <button type="button" id="update-close" aria-label="Zamknij">✕</button>
+      </div>
+      <label class="cut-tool">Przekrój
+        <input id="cut" type="range" min="0" max="100" step="1" value="0">
+      </label>
       <div id="dims"></div>
       <div id="loading">Ładowanie silnika geometrii…</div>
     </main>

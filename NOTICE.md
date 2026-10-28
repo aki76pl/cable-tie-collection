@@ -10,7 +10,11 @@ Pliki STL i 3MF tworzone programem możesz drukować na własny, niekomercyjny u
 
 ## Inspiracje i źródła
 
-Wszystkie cztery modele zaprojektowano od zera jako bryły parametryczne. Nazwy typów zapięć (zapadka, zadziory, klamra przelotowa) opisują ogólnie znane rozwiązania i nie odnoszą się do konkretnych produktów ani znaków towarowych.
+Modele zaprojektowano od zera jako bryły parametryczne. Nazwy typów zapięć (zapadka, zadziory, klamra przelotowa, klips) opisują ogólnie znane rozwiązania i nie odnoszą się do konkretnych produktów ani znaków towarowych.
+
+Model „Z oczkami” pochodzi z [Generatora Opasek](https://github.com/aki76pl/cable-tie-generator) tego samego autora. Jego domyślne wymiary dobrano na podstawie pomiarów modelu „Corpo” autorstwa **OfficineCasperLAB** (licencja *Standard Digital File License*). Repozytorium nie zawiera tego pliku ani jego siatki; prawa do oryginalnego modelu należą do jego autora.
+
+Czcionka napisów na paskach to prosta czcionka kreskowa narysowana na potrzeby tego projektu.
 
 ## Komponenty zewnętrzne
 
