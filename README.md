@@ -28,6 +28,9 @@ Nowy model to jeden plik w `src/models/` (parametry, sekcje panelu i funkcja `bu
 
 ## Prawa autorskie i licencja
 
-Copyright © 2026 aki76pl. Kod jest udostępniony na licencji [MIT](LICENSE): możesz go używać, zmieniać i rozpowszechniać, także komercyjnie, pod warunkiem zachowania informacji o prawach autorskich i treści licencji.
+Copyright © 2026 aki76pl. **Wszelkie prawa zastrzeżone.** Kod jest publiczny do wglądu, ale nie jest open source.
 
-Wygenerowane pliki STL / 3MF możesz wykorzystywać bez ograniczeń. Inspiracje, źródła wymiarów i licencje użytych bibliotek opisuje plik [NOTICE.md](NOTICE.md).
+- **Wolno:** przeglądać kod, uruchamiać program i drukować wygenerowane modele na własny, niekomercyjny użytek.
+- **Nie wolno** bez pisemnej zgody autora: zmieniać programu, rozpowszechniać go ani wygenerowanych modeli, ani używać ich komercyjnie (w tym sprzedawać modeli i wydruków).
+
+Pełne warunki są w pliku [LICENSE](LICENSE). Inspiracje, źródła wymiarów i licencje użytych bibliotek opisuje plik [NOTICE.md](NOTICE.md).

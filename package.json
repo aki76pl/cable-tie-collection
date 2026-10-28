@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Cztery parametryczne modele opasek do kabli (STL/3MF) z podglądem 3D na żywo",
   "author": "aki76pl",
-  "license": "MIT",
+  "license": "SEE LICENSE IN LICENSE",
   "type": "module",
   "main": "electron/main.cjs",
   "scripts": {

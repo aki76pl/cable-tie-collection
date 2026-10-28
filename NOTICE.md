@@ -2,11 +2,11 @@
 
 Copyright © 2026 aki76pl (https://github.com/aki76pl)
 
-Kod źródłowy tego projektu jest udostępniony na licencji MIT. Pełny tekst licencji znajduje się w pliku [LICENSE](LICENSE).
+Wszelkie prawa zastrzeżone. Kod źródłowy jest publiczny wyłącznie do wglądu. Zmienianie, rozpowszechnianie i komercyjne wykorzystanie bez pisemnej zgody autora są zabronione. Pełne warunki są w pliku [LICENSE](LICENSE).
 
 ## Wygenerowane modele
 
-Pliki STL i 3MF tworzone programem są wynikiem jego działania na Twoich parametrach. Możesz je drukować, modyfikować, udostępniać i sprzedawać bez ograniczeń, także komercyjnie. Podanie źródła jest mile widziane, ale nie jest wymagane.
+Pliki STL i 3MF tworzone programem możesz drukować na własny, niekomercyjny użytek. Bez pisemnej zgody autora nie wolno ich udostępniać, sprzedawać ani sprzedawać wykonanych z nich wydruków.
 
 ## Inspiracje i źródła
 

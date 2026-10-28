@@ -1,21 +1,44 @@
-MIT License
+Licencja — wszelkie prawa zastrzeżone
 
-Copyright (c) 2026 aki76pl
+Copyright © 2026 aki76pl (https://github.com/aki76pl). Wszelkie prawa zastrzeżone.
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+Kod źródłowy, grafiki i dokumentacja tego projektu („Oprogramowanie”) są
+chronione prawem autorskim. Udostępnienie ich publicznie na GitHubie nie
+oznacza udzielenia licencji open source.
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+DOZWOLONE jest wyłącznie:
+  1. przeglądanie kodu źródłowego,
+  2. uruchamianie Oprogramowania (wersja web, instalator, wersja portable)
+     do własnego, niekomercyjnego użytku,
+  3. drukowanie wygenerowanych modeli (STL / 3MF) na własny, niekomercyjny
+     użytek.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+ZABRONIONE jest, bez uprzedniej pisemnej zgody autora:
+  1. modyfikowanie Oprogramowania i tworzenie utworów zależnych,
+  2. rozpowszechnianie Oprogramowania lub jego części (w tym kopii kodu,
+     plików wykonywalnych i wygenerowanych modeli), odpłatnie lub nieodpłatnie,
+  3. jakiekolwiek wykorzystanie komercyjne, w tym sprzedaż Oprogramowania,
+     wygenerowanych modeli lub wydruków wykonanych z tych modeli.
+
+Biblioteki zewnętrzne użyte w projekcie należą do swoich autorów i podlegają
+własnym licencjom (zob. NOTICE.md). Niniejsza licencja ich nie obejmuje.
+
+OPROGRAMOWANIE JEST DOSTARCZANE „TAK JAK JEST”, BEZ JAKIEJKOLWIEK GWARANCJI.
+AUTOR NIE ODPOWIADA ZA SZKODY WYNIKAJĄCE Z JEGO UŻYCIA.
+
+W sprawie zgody na użycie wykraczające poza powyższe zasady skontaktuj się
+z autorem przez GitHub: https://github.com/aki76pl
+
+-------------------------------------------------------------------------------
+
+License — All rights reserved
+
+Copyright © 2026 aki76pl. All rights reserved.
+
+You may only view the source code, run the software for personal,
+non-commercial use, and print generated models for personal, non-commercial
+use. Without prior written permission from the author you may NOT modify the
+software or create derivative works, redistribute it or any part of it
+(including generated models), or use it or its output for any commercial
+purpose. Third-party libraries remain under their own licenses (see NOTICE.md).
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.
