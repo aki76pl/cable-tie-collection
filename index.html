@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kolekcja Opasek</title>
+  <link rel="icon" href="./icon.svg" type="image/svg+xml" />
+</head>
+<body>
+  <div id="app">
+    <aside id="panel">
+      <header class="brand">
+        <img src="./icon.svg" alt="" width="28" height="28" />
+        <div>
+          <h1>Kolekcja Opasek</h1>
+          <p>4 modele opasek do kabli — STL / 3MF</p>
+        </div>
+      </header>
+      <nav id="models" aria-label="Rodzaj opaski"></nav>
+      <div id="model-desc"></div>
+      <form id="controls" autocomplete="off"></form>
+      <section id="stats"></section>
+      <ul id="warnings"></ul>
+      <footer class="actions">
+        <button type="button" id="dl-stl" class="primary">Pobierz STL</button>
+        <button type="button" id="dl-3mf">Pobierz 3MF</button>
+        <button type="button" id="reset" class="ghost">Przywróć domyślne</button>
+      </footer>
+    </aside>
+    <main id="viewport">
+      <canvas id="view"></canvas>
+      <div class="view-tools">
+        <button type="button" data-view="iso" title="Widok izometryczny">3D</button>
+        <button type="button" data-view="top" title="Widok z góry">Góra</button>
+        <button type="button" data-view="side" title="Widok z boku">Bok</button>
+      </div>
+      <div id="dims"></div>
+      <div id="loading">Ładowanie silnika geometrii…</div>
+    </main>
+  </div>
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>

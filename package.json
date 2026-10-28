@@ -1,0 +1,65 @@
+{
+  "name": "cable-tie-collection",
+  "productName": "Kolekcja Opasek",
+  "version": "1.0.0",
+  "description": "Cztery parametryczne modele opasek do kabli (STL/3MF) z podglądem 3D na żywo",
+  "author": "aki76pl",
+  "license": "MIT",
+  "type": "module",
+  "main": "electron/main.cjs",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "electron": "vite build && electron .",
+    "dist": "vite build && electron-builder --win --publish never"
+  },
+  "build": {
+    "appId": "pl.aki76.cabletiecollection",
+    "productName": "Kolekcja Opasek",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**",
+      "electron/**",
+      "package.json"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "build/icon.png"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "artifactName": "KolekcjaOpasek-${version}-setup.exe"
+    },
+    "portable": {
+      "artifactName": "KolekcjaOpasek-${version}-portable.exe"
+    }
+  },
+  "devDependencies": {
+    "electron": "44.9.1",
+    "electron-builder": "26.17.0",
+    "manifold-3d": "3.5.4",
+    "three": "0.186.1",
+    "vite": "8.3.4"
+  },
+  "allowScripts": {
+    "electron@44.9.1": true,
+    "electron-winstaller@5.4.0": true
+  }
+}
