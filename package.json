@@ -1,7 +1,7 @@
 {
   "name": "cable-tie-collection",
   "productName": "Kolekcja Opasek",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Cztery parametryczne modele opasek do kabli (STL/3MF) z podglądem 3D na żywo",
   "author": "aki76pl",
   "license": "SEE LICENSE IN LICENSE",
@@ -49,7 +49,17 @@
     },
     "portable": {
       "artifactName": "KolekcjaOpasek-${version}-portable.exe"
-    }
+    },
+    "extraFiles": [
+      {
+        "from": "LICENSE",
+        "to": "LICENSE.txt"
+      },
+      {
+        "from": "NOTICE.md",
+        "to": "NOTICE.md"
+      }
+    ]
   },
   "devDependencies": {
     "electron": "44.9.1",
